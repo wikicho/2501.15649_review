@@ -209,30 +209,6 @@ def V1_2prime_finiteT(T: float, m2: float, N: int = 10) -> float:
         return 6 * T**2 / (np.pi**2) * jb(y2, N)  - 5 * T**2 / (np.pi**2) * jb_prime(y2, N) * y2 + 2 * T**2 / (np.pi**2) * jb_2prime_value_y22
     else:
         return 6 * T**2 / (np.pi**2) * jb(y2, N)  - 5 * T**2 / (np.pi**2) * jb_prime(y2, N) * y2 + 2 * T**2 / (np.pi**2) * jb_2prime(y2, N) * y2**2
-        
-
-
-
-# ------------------------------------------------------------------
-# Daisy corrections
-def daisy_correction(T: float, m2: float, N: int = 10) -> float:
-    """
-    Computes the daisy correction to the mass.
-    """
-    y2 = m2 / (T**2)
-    return T**2 * jb(y2, N) / (4 * np.pi**2)
-def daisy_correction_prime(T: float, m2: float, N: int = 10) -> float:
-    """
-    Computes the first derivative of the daisy correction to the mass.
-    """
-    y2 = m2 / (T**2)
-    return T * jb(y2, N) / (2 * np.pi**2) - T / (2 * np.pi**2) * jb_prime(y2, N) * y2
-def daisy_correction_2prime(T: float, m2: float, N: int = 10) -> float:
-    """
-    Computes the second derivative of the daisy correction to the mass.
-    """
-    y2 = m2 / (T**2)
-    return jb(y2, N) / (2 * np.pi**2) - T / (np.pi**2) * jb_prime(y2, N) * y2 - T / (4 * np.pi**2) * jb_2prime(y2, N) * y2**2
 
 
 # ------------------------------------------------------------------
