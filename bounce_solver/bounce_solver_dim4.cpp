@@ -1,4 +1,21 @@
-#include "bounce_solver_dim3.h"
+#include "bounce_solver_dim4.h"
+
+
+
+// find the phi value that V(0) = V(\phi), which is neither a minimum nor a maximum.
+double BounceSolverS4::find_cross() const {
+
+    double phi_cross = 0;
+
+    for (int i = 0; i < phi_vec_.size(); ++i) {
+        if (V_vec_[i] < V_vec_[0]) {
+            phi_cross = phi_vec_[i];
+            break;
+        }
+    }
+
+    return phi_cross;
+}
 
 double BounceSolverS4::find_top() const
 {
@@ -6,7 +23,7 @@ double BounceSolverS4::find_top() const
     double tol = 1e-8;
 
     std::vector<double> grid(n_scan + 1), deriv(n_scan + 1);
-    double h = (phi0_ - phi_metamin_) / n_scan;
+    double h = (phi_cross_ - phi_metamin_) / n_scan;
     for (int i = 0; i <= n_scan; ++i)
     {
         double phi = phi_metamin_ + i * h;
@@ -54,7 +71,7 @@ double BounceSolverS4::find_top() const
         { return V_(a) < V_(b); });
 }
 
-double BounceSolverS4::calculate_qd_() const
+double BounceSolverS4::calculate_qd_(double phi0_) const
 {
     double V0 = V_(phi0_) - V_(phi_metamin_);
     double V0p = dV_(phi0_);
@@ -108,11 +125,14 @@ double BounceSolverS4::V_t_prime(double phi) const
     return vt3_prime + vt4_prime;
 }
 
-double BounceSolverS4::bounce_action() const
-{
+double BounceSolverS4::calculate_action(double phi) const {
     double front_factor = 54 * M_PI * M_PI;
 
     // integrand definition
+    std::vector<double> phi_vec;
+    std::vector<double> integrand;
+
+    for (int i = 0; i < )
     std::function<double(double)> integrand = [this](double phi)
     {
         double V = V_(phi) - V_(phi_metamin_);
@@ -122,9 +142,14 @@ double BounceSolverS4::bounce_action() const
     };
 
     // numerical integration
-    double integral = boost::math::quadrature::gauss_kronrod<double, 15>().integrate(integrand, phi_metamin_, phi0_, 3, 1e-6);
+    double integral = 0;
 
     double action = front_factor * integral;
 
     return action;
+}
+
+double BounceSolverS4::bounce_action() const
+{
+    return action_;
 }
