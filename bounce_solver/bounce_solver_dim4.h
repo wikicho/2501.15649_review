@@ -1,7 +1,3 @@
-//
-// Created by wikicho on 12/1/25.
-//
-
 #ifndef BOUNCE_SOLVER_DIM4_H
 #define BOUNCE_SOLVER_DIM4_H
 
@@ -37,11 +33,11 @@ private:
 
 
     double calculate_qd_(double phi0_) const;       // quartic coefficient
-    double V_t(double phi) const;       // tunneling potential
-    double V_t_prime(double phi) const; // first derivative of tunneling potential
+    double V_t(double phi, double phi0_, double qd_) const;       // tunneling potential
+    double V_t_prime(double phi, double phi0_, double qd_) const; // first derivative of tunneling potential
     double find_top() const;   // find maximum of
     double find_cross() const; // find V(0) = V(phi)
-    double calculate_action(double phi) const;
+    double calculate_action(double phi0_) const;
 
 
 public:
@@ -54,7 +50,7 @@ public:
 
         for (double phi = phi_metamin_; phi < phi_true_; phi += dphi ) {
             phi_vec_.push_back(phi);
-            V_vec_.push_back(V_t(phi));
+            V_vec_.push_back(V(phi));
             dV_vec_.push_back(dphi);
         }
 
